@@ -1,5 +1,11 @@
 # CS-441---Programming-assignment-1
 
+## Preface
+
+ - I have included each iteration of the program that Claude generated at the bottom of this page under the section "Iterations". This includes the iterations on the entire program, as well as iterations on a specific functions that needed to be modified (details in "Quick Sort" section). The final iteration of the functions used for Quick Sort were pasted into the final iteration of the full code, replacing the sort that Claude had originally generated. 
+
+ - I have included the transcript in a separate file called "Transcript". This includes all of my interactions with the AI. Each iteration of the code that I provided coincides with the response I got from each prompt in the transcript. I did not include each iteration of the code in the transcript itself, see the separate file. 
+
 # The prompt
 
 ---
@@ -120,6 +126,7 @@ Create the following functions:
 End function.
 
 ---
+---
 
 ## Use of AI
 
@@ -127,7 +134,7 @@ End function.
 
 This was no doubt partially due to the fact that my prompt doesn't give every last detail necessary to implement the program. But it was mostly due to the fact that ChatGPT refused to do what I told it to do, and insisted on doing things that I told it not to do. You can see remnants of my struggles with ChatGPT in this prompt, such as the line "There should be no “if” statements in this function." in Function2. ChatGPT insisted on using "if" statements even when it wasn't necessary, and always forgot to provide a coinciding "else" or "#f". This is just one of the numerous errors that displayed ChatGPTs lack of understanding of Racket. Even after telling the AI what mistake it was making and how to correct it, it continued making that same mistake. 
 
-Other problems with ChatGPT and CoPilot mostly revolved around it doing the exact opposite of what I told it to do. If I say Quick Sort, ChatGPT provides a Merge Sort method. If I say use vectors for sorting, ChatGPT uses lists for sorting. If I tell ChatGPT not to use functions from other libraries, ChatGPT will either import other libraries anyways, or simply use functions from other libraries without importing them. If I say the program should have balanced parentheses, ChatGPT provides unbalanced parentheses.
+Other problems with ChatGPT and CoPilot mostly revolved around it doing the exact opposite of what I told it to do. If I say Quick Sort, ChatGPT provides a Merge Sort method. If I say use vectors for sorting, ChatGPT uses lists for sorting. If I tell ChatGPT not to use functions from other libraries, ChatGPT will either import other libraries anyways, or simply attempt use functions from other libraries without importing them. If I say the program should have balanced parentheses, ChatGPT provides unbalanced parentheses.
 
 I spent many hours trying to get ChatGPT to cooperate. I tried many different methods. I scrapped many prompt ideas and tested out many things. I am not joking when I say that as of the Saturday before this assignment was due, I was planning on turning in a document with over 500 pages of prompts and responses to implement a code using ChatGPT that didn't even fully function as intended. I tried several different methods. Some of the methods I tried included
 
@@ -139,16 +146,16 @@ I spent many hours trying to get ChatGPT to cooperate. I tried many different me
 
 The last example I gave was the only one that was able to generate a working solution (which resulted in the 500+ page document that I nearly submitted for this assignment), but it was far from perfect. For example, even though I specified that the sorting algorithm should be a Quick Sort, ChatGPT provided a Merge Sort. 
 
-At this point I had tried Claude a couple of times in the week prior to the assignment being due, but Claude can only generate about 6 responses every several hours, so I decided to stick with ChatGPT and CoPilot. But I decided to make some modifications to the prompt at the top of this page (mainly just making sure the variables are cleared in the "restart" function) and entered it into Claude. 
+At this point I had tried Claude a couple of times in the week prior to the assignment being due, but Claude can only generate about 6 responses every several hours, which lead to my decision to stick with ChatGPT and CoPilot. But I decided to make some modifications to the prompt at the top of this page (mainly just making sure the variables are cleared in the "restart" function) and entered it into Claude. 
 
-Miraculously, Claude was able to do everything that I asked on the first try. However, I noticed the output was very slow for the large input file. So I asked Claude to figure out what the issue was and to come up with a solution. There were a few errors along the way, but within a couple of responses Claude was able to resolve these issues and develop a solution for the slow output. 
+Miraculously, Claude was able to do everything that I asked on the first try. It did re-arrange some of the functions but it completed the task successfully. However, I noticed the output was very slow for the large input file. So I asked Claude to figure out what the issue was and to come up with a solution. There were a few errors along the way, but within a couple of responses Claude was able to resolve these issues and develop a solution for the slow output. 
 
-Unfortunately, in the process of these optimizations, Claude decided to remove my Quick Sort function. I gave Claude the function in isolation, and asked it to change the method to a custom Quick Sort. Within a couple of prompts, Claude was able to provide a working solution. 
-
-
+Unfortunately, in the process of these optimizations, Claude decided to remove my Quick Sort function in favor of the default Racket library sort. I gave Claude the function in isolation, and asked it to change the method to a custom Quick Sort. Within a couple of prompts, Claude was able to provide a working solution. 
 
 
 
+---
+---
 
 
 
@@ -166,6 +173,9 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
 -Program uses a custom quick sort function created by the AI (Claude) to do the sorting.
 
 -After output, the program asks the user if they would like to process another file.
+
+---
+---
 
 ## Each Significant Block of Code
 
@@ -474,4 +484,841 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
       (function5))
     
     (main)
-  
+
+---
+---
+
+## Iterations
+
+-All of the iterations that were made by Claude are documented below: 
+
+- Iteration 1
+
+      #lang racket
+      
+      ; Global variables
+      (define integer #f)
+      (define table (make-hash))
+      (define filename "")
+      (define array (vector))
+      
+      ; Quick sort implementation
+      (define (quick-sort vec left right)
+        (when (< left right)
+          (let ([pivot (partition vec left right)])
+            (quick-sort vec left (sub1 pivot))
+            (quick-sort vec (add1 pivot) right))))
+      
+      (define (partition vec left right)
+        (let* ([pivot-val (vector-ref vec right)]
+               [store-idx left])
+          (for ([i (in-range left right)])
+            (when (<= (vector-ref vec i) pivot-val)
+              (vector-swap! vec i store-idx)
+              (set! store-idx (add1 store-idx))))
+          (vector-swap! vec store-idx right)
+          store-idx))
+      
+      (define (vector-swap! vec i j)
+        (let ([temp (vector-ref vec i)])
+          (vector-set! vec i (vector-ref vec j))
+          (vector-set! vec j temp)))
+      
+      ; Function1
+      (define (function1 bool)
+        (if integer
+            (begin
+              (display "(")
+              (for ([i (in-range (vector-length array))])
+                (let ([val (vector-ref array i)]
+                      [freq (hash-ref table (vector-ref array i))])
+                  (display (format "(~a ~a) " val freq))))
+              (display ")"))
+            (for ([(k v) (in-hash table)])
+              (for ([i (in-range v)])
+                (display (format "~a " k)))))
+        (newline)
+        (restart))
+      
+      ; Function2
+      (define (function2)
+        (set! array (list->vector (hash-keys table)))
+        (quick-sort array 0 (sub1 (vector-length array)))
+        (function1 integer))
+      
+      ; Function3
+      (define (function3 filename)
+        (with-input-from-file filename
+          (lambda ()
+            (let ([nums (read-line)])
+              (for ([num (string-split nums)])
+                (let ([n (string->number num)])
+                  (hash-update! table n add1 0))))))
+        (function2))
+      
+      ; Function4
+      (define (function4 filename)
+        (with-input-from-file filename
+          (lambda ()
+            (let ([pairs (read)])
+              (for ([pair pairs])
+                (let ([value (first pair)]
+                      [freq (second pair)])
+                  (hash-set! table value freq))))))
+        (function2))
+      
+      ; Function5
+      (define (function5)
+        (display "Enter the name of the input file: ")
+        (set! filename (read-line))
+        (let ([first-char (with-input-from-file filename
+                            (lambda ()
+                              (let loop ()
+                                (let ([c (read-char)])
+                                  (if (char-whitespace? c)
+                                      (loop)
+                                      c)))))])
+          (if (or (char-numeric? first-char)
+                  (char=? first-char #\-))
+              (begin
+                (set! integer #t)
+                (function3 filename))
+              (function4 filename))))
+      
+      ; Restart function
+      (define (restart)
+        (set! filename #f)
+        (set! array #f)
+        (set! integer #f)
+        (hash-clear! table)
+        (display "\nMenu:\n1. Reset\n2. Quit\nEnter your choice: ")
+        (let ([choice (read-line)])
+          (cond
+            [(equal? choice "1") (function5)]
+            [(equal? choice "2") (display "End of program\n")])))
+      
+      ; Main function
+      (define (main)
+        (function5))
+      
+      (main)
+
+
+---
+---
+
+- Iteration 2
+ 
+      #lang racket
+    
+      ; Global variables
+      (define integer #f)
+      (define table (make-hash))
+      (define filename "")
+      (define array (vector))
+      
+      ; Optimized Quick sort implementation using vectors directly
+      (define (quick-sort vec left right)
+        (when (< left right)
+          (let ([pivot (partition vec left right)])
+            (quick-sort vec left (sub1 pivot))
+            (quick-sort vec (add1 pivot) right))))
+      
+      (define (partition vec left right)
+        (let* ([pivot-val (vector-ref vec right)]
+               [store-idx left])
+          (for ([i (in-range left right)])
+            (when (<= (vector-ref vec i) pivot-val)
+              (vector-swap! vec i store-idx)
+              (set! store-idx (add1 store-idx))))
+          (vector-swap! vec store-idx right)
+          store-idx))
+      
+      (define (vector-swap! vec i j)
+        (let ([temp (vector-ref vec i)])
+          (vector-set! vec i (vector-ref vec j))
+          (vector-set! vec j temp)))
+      
+      ; Optimized Function1 using string ports for efficient output
+      (define (function1 bool)
+        (let ([out (open-output-string)])
+          (if integer
+              (begin
+                (write-string "(" out)
+                (for ([i (in-range (vector-length array))])
+                  (let ([val (vector-ref array i)]
+                        [freq (hash-ref table (vector-ref array i))])
+                    (fprintf out "(~a ~a) " val freq)))
+                (write-string ")" out))
+              (for ([(k v) (in-hash table)])
+                (for ([i (in-range v)])
+                  (fprintf out "~a " k))))
+          (display (get-output-string out))
+          (newline))
+        (restart))
+      
+      ; Optimized Function2 using more efficient vector operations
+      (define (function2)
+        ; Convert hash-keys to vector more efficiently
+        (set! array (list->vector 
+                     (sort (hash-keys table) <)))  ; Sort during conversion instead of after
+        (function1 integer))
+      
+      ; Optimized Function3 for faster file reading
+      (define (function3 filename)
+        (with-input-from-file filename
+          (lambda ()
+            (let ([port (current-input-port)])
+              ; Read the entire file at once and split into strings
+              (for ([num (string-split (port->string port))])
+                (let ([n (string->number num)])
+                  (hash-update! table n add1 0))))))
+        (function2))
+      
+      ; Optimized Function4 for faster pair reading
+      (define (function4 filename)
+        (with-input-from-file filename
+          (lambda ()
+            ; Read entire file as one s-expression
+            (let ([pairs (read)])
+              (for ([pair pairs])
+                (let ([value (first pair)]
+                      [freq (second pair)])
+                  (hash-set! table value freq))))))
+        (function2))
+      
+      ; Function5 with optimized file checking
+      (define (function5)
+        (display "Enter the name of the input file: ")
+        (set! filename (read-line))
+        ; More efficient first character check
+        (let ([first-char (with-input-from-file filename
+                            (lambda ()
+                              (let ([c (peek-char)])
+                                (if (char-whitespace? c)
+                                    (let loop ()
+                                      (read-char)
+                                      (let ([next-c (peek-char)])
+                                        (if (char-whitespace? next-c)
+                                            (loop)
+                                            next-c)))
+                                    c))))])
+          (if (or (char-numeric? first-char)
+                  (char=? first-char #\-))
+              (begin
+                (set! integer #t)
+                (function3 filename))
+              (function4 filename))))
+      
+      ; Restart function (unchanged)
+      (define (restart)
+        (set! filename #f)
+        (set! array #f)
+        (set! integer #f)
+        (hash-clear! table)
+        (display "\nMenu:\n1. Reset\n2. Quit\nEnter your choice: ")
+        (let ([choice (read-line)])
+          (cond
+            [(equal? choice "1") (function5)]
+            [(equal? choice "2") (display "End of program\n")])))
+      
+      ; Main function
+      (define (main)
+        (function5))
+      
+      (main)
+
+---
+---
+
+- Iteration 3
+
+      #lang racket
+      
+      ; Global variables with optimized data structures
+      (define integer #f)
+      (define table (make-hash))
+      (define filename "")
+      (define array (vector))
+      
+      ; Buffer size for chunked output
+      (define BUFFER-SIZE 1048576) ; 1MB buffer
+      
+      ; Optimized output function for large datasets
+      (define (output-chunk lst port)
+        (for ([item lst])
+          (display item port)
+          (display " " port)))
+      
+      ; Chunked output function
+      (define (chunked-output items chunk-size)
+        (let loop ([remaining items])
+          (cond
+            [(null? remaining) (void)]
+            [else
+             (let ([chunk (take remaining (min chunk-size (length remaining)))])
+               (output-chunk chunk (current-output-port))
+               (loop (drop remaining chunk-size)))])))
+      
+      ; Optimized Function1 using chunked output
+      (define (function1 bool)
+        (if integer
+            ; For value-frequency pairs
+            (begin
+              (display "(")
+              (let ([pairs (for/list ([i (in-range (vector-length array))])
+                            (let ([val (vector-ref array i)]
+                                  [freq (hash-ref table (vector-ref array i))])
+                              (format "(~a ~a)" val freq)))])
+                (chunked-output pairs 1000))
+              (display ")"))
+            ; For repeated integers
+            (let ([expanded-list 
+                   (for*/list ([(k v) (in-hash table)]
+                              [i (in-range v)])
+                     k)])
+              (chunked-output expanded-list 1000)))
+        (newline)
+        (restart))
+      
+      ; Optimized Function2 with direct sorting
+      (define (function2)
+        (set! array 
+              (list->vector
+               (sort (hash-keys table) <)))
+        (function1 integer))
+      
+      ; Optimized Function3 with buffered reading
+      (define (function3 filename)
+        (with-input-from-file filename
+          (lambda ()
+            (let ([in (current-input-port)])
+              (let loop ()
+                (let ([chunk (read-bytes BUFFER-SIZE in)])
+                  (when (positive? (bytes-length chunk))
+                    (for ([num (string-split (bytes->string/utf-8 chunk))])
+                      (let ([n (string->number num)])
+                        (when n  ; Skip invalid numbers
+                          (hash-update! table n add1 0))))
+                    (when (= (bytes-length chunk) BUFFER-SIZE)
+                      (loop))))))))
+        (function2))
+      
+      ; Optimized Function4 with streaming read
+      (define (function4 filename)
+        (with-input-from-file filename
+          (lambda ()
+            (let ([pairs (read)])
+              (for ([pair pairs])
+                (let ([value (first pair)]
+                      [freq (second pair)])
+                  (hash-set! table value freq))))))
+        (function2))
+      
+      ; Optimized Function5 with faster file checking
+      (define (function5)
+        (display "Enter the name of the input file: ")
+        (set! filename (read-line))
+        (call-with-input-file filename
+          (lambda (in)
+            (let loop ()
+              (let ([c (read-byte in)])
+                (cond
+                  [(eof-object? c) (void)]
+                  [(or (= c 32) (= c 9) (= c 10) (= c 13)) (loop)]  ; Skip whitespace
+                  [else
+                   (set! integer (or (and (>= c 48) (<= c 57))      ; 0-9
+                                    (= c 45)))                       ; -
+                   (if integer
+                       (function3 filename)
+                       (function4 filename))])))))))
+      
+      ; Optimized restart function
+      (define (restart)
+        (set! filename #f)
+        (set! array #f)
+        (set! integer #f)
+        (hash-clear! table)
+        (display "\nMenu:\n1. Reset\n2. Quit\nEnter your choice: ")
+        (flush-output)  ; Ensure prompt is displayed immediately
+        (let ([choice (read-line)])
+          (cond
+            [(equal? choice "1") (function5)]
+            [(equal? choice "2") (display "End of program\n")])))
+      
+      ; Main function
+      (define (main)
+        (function5))
+      
+      (main)
+
+---
+---
+
+- Iteration 4
+
+      #lang racket
+      
+      ; Global variables with optimized data structures
+      (define integer #f)
+      (define table (make-hash))
+      (define filename "")
+      (define array (vector))
+      
+      ; Buffer size for chunked output
+      (define BUFFER-SIZE 1048576) ; 1MB buffer
+      
+      ; Optimized output function for large datasets
+      (define (output-chunk lst port)
+        (for ([item lst])
+          (display item port)
+          (display " " port)))
+      
+      ; Modified chunked output function that handles lists of any size
+      (define (chunked-output items chunk-size)
+        (let loop ([remaining items])
+          (when (not (null? remaining))
+            (let ([current-chunk-size (min chunk-size (length remaining))])
+              (output-chunk (take remaining current-chunk-size) (current-output-port))
+              (when (> (length remaining) current-chunk-size)
+                (loop (drop remaining current-chunk-size)))))))
+      
+      ; Optimized Function1 using chunked output
+      (define (function1 bool)
+        (if integer
+            ; For value-frequency pairs
+            (begin
+              (display "(")
+              (let ([pairs (for/list ([i (in-range (vector-length array))])
+                            (let ([val (vector-ref array i)]
+                                  [freq (hash-ref table (vector-ref array i))])
+                              (format "(~a ~a)" val freq)))])
+                (chunked-output pairs 1000))
+              (display ")"))
+            ; For repeated integers
+            (let ([expanded-list 
+                   (for*/list ([(k v) (in-hash table)]
+                              [i (in-range v)])
+                     k)])
+              (chunked-output expanded-list 1000)))
+        (newline)
+        (restart))
+      
+      ; Optimized Function2 with direct sorting
+      (define (function2)
+        (set! array 
+              (list->vector
+               (sort (hash-keys table) <)))
+        (function1 integer))
+      
+      ; Optimized Function3 with buffered reading
+      (define (function3 filename)
+        (with-input-from-file filename
+          (lambda ()
+            (let ([in (current-input-port)])
+              (let loop ()
+                (let ([chunk (read-bytes BUFFER-SIZE in)])
+                  (when (positive? (bytes-length chunk))
+                    (for ([num (string-split (bytes->string/utf-8 chunk))])
+                      (let ([n (string->number num)])
+                        (when n  ; Skip invalid numbers
+                          (hash-update! table n add1 0))))
+                    (when (= (bytes-length chunk) BUFFER-SIZE)
+                      (loop))))))))
+        (function2))
+      
+      ; Optimized Function4 with streaming read
+      (define (function4 filename)
+        (with-input-from-file filename
+          (lambda ()
+            (let ([pairs (read)])
+              (for ([pair pairs])
+                (let ([value (first pair)]
+                      [freq (second pair)])
+                  (hash-set! table value freq))))))
+        (function2))
+      
+      ; Optimized Function5 with faster file checking
+      (define (function5)
+        (display "Enter the name of the input file: ")
+        (set! filename (read-line))
+        (call-with-input-file filename
+          (lambda (in)
+            (let loop ()
+              (let ([c (read-byte in)])
+                (cond
+                  [(eof-object? c) (void)]
+                  [(or (= c 32) (= c 9) (= c 10) (= c 13)) (loop)]  ; Skip whitespace
+                  [else
+                   (set! integer (or (and (>= c 48) (<= c 57))      ; 0-9
+                                    (= c 45)))                       ; -
+                   (if integer
+                       (function3 filename)
+                       (function4 filename))])))))))
+      
+      ; Optimized restart function
+      (define (restart)
+        (set! filename #f)
+        (set! array #f)
+        (set! integer #f)
+        (hash-clear! table)
+        (display "\nMenu:\n1. Reset\n2. Quit\nEnter your choice: ")
+        (flush-output)  ; Ensure prompt is displayed immediately
+        (let ([choice (read-line)])
+          (cond
+            [(equal? choice "1") (function5)]
+            [(equal? choice "2") (display "End of program\n")])))
+      
+      ; Main function
+      (define (main)
+        (function5))
+      
+      (main)
+
+---
+---
+
+- Fix For Quick Sort: Implementation 1
+
+      (define (quicksort lst)
+        (if (or (null? lst) (null? (cdr lst)))
+            lst
+            (let* ([pivot (car lst)]
+                   [rest (cdr lst)]
+                   [smaller (filter (lambda (x) (< x pivot)) rest)]
+                   [greater (filter (lambda (x) (>= x pivot)) rest)])
+              (append (quicksort smaller)
+                      (list pivot)
+                      (quicksort greater)))))
+      
+      (define (vector->list* v)
+        (let ([len (vector-length v)])
+          (let loop ([i 0] [result '()])
+            (if (= i len)
+                (reverse result)
+                (loop (+ i 1) (cons (vector-ref v i) result))))))
+      
+      (define (list->vector* lst)
+        (let* ([len (length lst)]
+               [vec (make-vector len)])
+          (let loop ([i 0] [remaining lst])
+            (if (null? remaining)
+                vec
+                (begin
+                  (vector-set! vec i (car remaining))
+                  (loop (+ i 1) (cdr remaining)))))))
+      
+      (define (function2)
+        (set! array 
+              (list->vector*
+               (quicksort
+                (vector->list*
+                 (hash-keys table)))))
+        (function1 integer))
+
+---
+---
+
+- Fix For Quick Sort: Implementation 2:
+
+      (define (quicksort lst)
+        (if (or (null? lst) (null? (cdr lst)))
+            lst
+            (let* ([pivot (car lst)]
+                   [rest (cdr lst)]
+                   [smaller (filter (lambda (x) (< x pivot)) rest)]
+                   [greater (filter (lambda (x) (>= x pivot)) rest)])
+              (append (quicksort smaller)
+                      (list pivot)
+                      (quicksort greater)))))
+      
+      (define (function2)
+        (set! array 
+              (list->vector
+               (quicksort
+                (hash-keys table))))
+        (function1 integer))
+
+---
+---
+
+- Fix For Quick Sort: Implementation 3:
+
+      (define (partition vec left right)
+        (let ([pivot (vector-ref vec right)])
+          (let loop ([i left]
+                     [j left]
+                     [store-index left])
+            (cond
+              [(> j (- right 1)) 
+               (begin
+                 (let ([temp (vector-ref vec right)])
+                   (vector-set! vec right (vector-ref vec store-index))
+                   (vector-set! vec store-index temp))
+                 store-index)]
+              [else
+               (if (< (vector-ref vec j) pivot)
+                   (begin
+                     (let ([temp (vector-ref vec j)])
+                       (vector-set! vec j (vector-ref vec store-index))
+                       (vector-set! vec store-index temp))
+                     (loop i (+ j 1) (+ store-index 1)))
+                   (loop i (+ j 1) store-index))]))))
+      
+      (define (iterative-quicksort vec)
+        (let ([stack (make-vector 100 0)]  ; Adjust size based on expected data
+              [top -1])
+          
+          ; Push initial values
+          (set! top (+ top 1))
+          (vector-set! stack top 0)  ; left
+          (set! top (+ top 1))
+          (vector-set! stack top (- (vector-length vec) 1))  ; right
+          
+          (let sort-loop ()
+            (when (>= top 0)
+              (let ([right (vector-ref stack top)])
+                (set! top (- top 1))
+                (let ([left (vector-ref stack top)])
+                  (set! top (- top 1))
+                  
+                  (let ([pivot-index (partition vec left right)])
+                    ; Push sub-arrays to stack
+                    (when (> (- pivot-index 1) left)
+                      (set! top (+ top 1))
+                      (vector-set! stack top left)
+                      (set! top (+ top 1))
+                      (vector-set! stack top (- pivot-index 1)))
+                    
+                    (when (< (+ pivot-index 1) right)
+                      (set! top (+ top 1))
+                      (vector-set! stack top (+ pivot-index 1))
+                      (set! top (+ top 1))
+                      (vector-set! stack top right)))
+                  
+                  (sort-loop))))))
+        vec)
+      
+      (define (function2)
+        (let ([keys-vector (list->vector (hash-keys table))])
+          (set! array (iterative-quicksort keys-vector))
+          (function1 integer)))
+
+---
+---
+
+- Fix For Quick Sort: Implementation 4
+
+      (define (partition vec left right)
+        (let ([pivot (vector-ref vec right)])
+          (let loop ([i left]
+                     [j left]
+                     [store-index left])
+            (cond
+              [(> j (- right 1)) 
+               (begin
+                 (let ([temp (vector-ref vec right)])
+                   (vector-set! vec right (vector-ref vec store-index))
+                   (vector-set! vec store-index temp))
+                 store-index)]
+              [else
+               (if (< (vector-ref vec j) pivot)
+                   (begin
+                     (let ([temp (vector-ref vec j)])
+                       (vector-set! vec j (vector-ref vec store-index))
+                       (vector-set! vec store-index temp))
+                     (loop i (+ j 1) (+ store-index 1)))
+                   (loop i (+ j 1) store-index))]))))
+      
+      (define (iterative-quicksort vec)
+        (let ([stack '()])  ; Use a list as stack instead of fixed-size vector
+          ; Push initial range
+          (set! stack (list (- (vector-length vec) 1) 0))
+          
+          (let sort-loop ()
+            (when (not (null? stack))
+              (let ([right (car stack)]
+                    [left (cadr stack)])
+                (set! stack (cddr stack))
+                
+                (let ([pivot-index (partition vec left right)])
+                  ; Push sub-arrays to stack
+                  (when (< (+ pivot-index 1) right)
+                    (set! stack (cons right (cons (+ pivot-index 1) stack))))
+                  
+                  (when (> (- pivot-index 1) left)
+                    (set! stack (cons (- pivot-index 1) (cons left stack))))
+                  
+                  (sort-loop))))))
+        vec)
+      
+      (define (function2)
+        (let ([keys-vector (list->vector (hash-keys table))])
+          (set! array (iterative-quicksort keys-vector))
+          (function1 integer)))
+
+---
+---
+
+- Final Code: Includes "Fix For Quick Sort: Implementation 4" as a replacement for the Quick Sort in "Iteration 4".
+
+      #lang racket
+      
+      ; Global variables with optimized data structures
+      (define integer #f)
+      (define table (make-hash))
+      (define filename "")
+      (define array (vector))
+      
+      ; Buffer size for chunked output
+      (define BUFFER-SIZE 1048576) ; 1MB buffer
+      
+      ; Optimized output function for large datasets
+      (define (output-chunk lst port)
+        (for ([item lst])
+          (display item port)
+          (display " " port)))
+      
+      ; Modified chunked output function that handles lists of any size
+      (define (chunked-output items chunk-size)
+        (let loop ([remaining items])
+          (when (not (null? remaining))
+            (let ([current-chunk-size (min chunk-size (length remaining))])
+              (output-chunk (take remaining current-chunk-size) (current-output-port))
+              (when (> (length remaining) current-chunk-size)
+                (loop (drop remaining current-chunk-size)))))))
+      
+      ; Optimized Function1 using chunked output
+      (define (function1 bool)
+        (if integer
+            ; For value-frequency pairs
+            (begin
+              (display "(")
+              (let ([pairs (for/list ([i (in-range (vector-length array))])
+                            (let ([val (vector-ref array i)]
+                                  [freq (hash-ref table (vector-ref array i))])
+                              (format "(~a ~a)" val freq)))])
+                (chunked-output pairs 1000))
+              (display ")"))
+            ; For repeated integers
+            (let ([expanded-list 
+                   (for*/list ([(k v) (in-hash table)]
+                              [i (in-range v)])
+                     k)])
+              (chunked-output expanded-list 1000)))
+        (newline)
+        (restart))
+      
+      ; Optimized Function2 with direct sorting
+      (define (partition vec left right)
+        (let ([pivot (vector-ref vec right)])
+          (let loop ([i left]
+                     [j left]
+                     [store-index left])
+            (cond
+              [(> j (- right 1)) 
+               (begin
+                 (let ([temp (vector-ref vec right)])
+                   (vector-set! vec right (vector-ref vec store-index))
+                   (vector-set! vec store-index temp))
+                 store-index)]
+              [else
+               (if (< (vector-ref vec j) pivot)
+                   (begin
+                     (let ([temp (vector-ref vec j)])
+                       (vector-set! vec j (vector-ref vec store-index))
+                       (vector-set! vec store-index temp))
+                     (loop i (+ j 1) (+ store-index 1)))
+                   (loop i (+ j 1) store-index))]))))
+      
+      (define (iterative-quicksort vec)
+        (let ([stack '()])  ; Use a list as stack instead of fixed-size vector
+          ; Push initial range
+          (set! stack (list (- (vector-length vec) 1) 0))
+          
+          (let sort-loop ()
+            (when (not (null? stack))
+              (let ([right (car stack)]
+                    [left (cadr stack)])
+                (set! stack (cddr stack))
+                
+                (let ([pivot-index (partition vec left right)])
+                  ; Push sub-arrays to stack
+                  (when (< (+ pivot-index 1) right)
+                    (set! stack (cons right (cons (+ pivot-index 1) stack))))
+                  
+                  (when (> (- pivot-index 1) left)
+                    (set! stack (cons (- pivot-index 1) (cons left stack))))
+                  
+                  (sort-loop))))))
+        vec)
+      
+      (define (function2)
+        (let ([keys-vector (list->vector (hash-keys table))])
+          (set! array (iterative-quicksort keys-vector))
+          (function1 integer)))
+      
+      ; Optimized Function3 with buffered reading
+      (define (function3 filename)
+        (with-input-from-file filename
+          (lambda ()
+            (let ([in (current-input-port)])
+              (let loop ()
+                (let ([chunk (read-bytes BUFFER-SIZE in)])
+                  (when (positive? (bytes-length chunk))
+                    (for ([num (string-split (bytes->string/utf-8 chunk))])
+                      (let ([n (string->number num)])
+                        (when n  ; Skip invalid numbers
+                          (hash-update! table n add1 0))))
+                    (when (= (bytes-length chunk) BUFFER-SIZE)
+                      (loop))))))))
+        (function2))
+      
+      ; Optimized Function4 with streaming read
+      (define (function4 filename)
+        (with-input-from-file filename
+          (lambda ()
+            (let ([pairs (read)])
+              (for ([pair pairs])
+                (let ([value (first pair)]
+                      [freq (second pair)])
+                  (hash-set! table value freq))))))
+        (function2))
+      
+      ; Optimized Function5 with faster file checking
+      (define (function5)
+        (display "Enter the name of the input file: ")
+        (set! filename (read-line))
+        (call-with-input-file filename
+          (lambda (in)
+            (let loop ()
+              (let ([c (read-byte in)])
+                (cond
+                  [(eof-object? c) (void)]
+                  [(or (= c 32) (= c 9) (= c 10) (= c 13)) (loop)]  ; Skip whitespace
+                  [else
+                   (set! integer (or (and (>= c 48) (<= c 57))      ; 0-9
+                                    (= c 45)))                       ; -
+                   (if integer
+                       (function3 filename)
+                       (function4 filename))]))))))
+      
+      ; Optimized restart function
+      (define (restart)
+        (set! filename #f)
+        (set! array #f)
+        (set! integer #f)
+        (hash-clear! table)
+        (display "\nMenu:\n1. Reset\n2. Quit\nEnter your choice: ")
+        (flush-output)  ; Ensure prompt is displayed immediately
+        (let ([choice (read-line)])
+          (cond
+            [(equal? choice "1") (function5)]
+            [(equal? choice "2") (display "End of program\n")])))
+      
+      
+      ; Main function
+      (define (main)
+        (function5))
+      
+      (main)
