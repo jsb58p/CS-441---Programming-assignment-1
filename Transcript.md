@@ -1,3 +1,5 @@
+## - All prompts were given to "Claude".
+
 # Prompt 1:
 ---
 Use racket to write the following program:
@@ -148,6 +150,7 @@ Would you like me to explain any specific part of the implementation in more det
 
 
 ---
+---
 
 ## Prompt 2:
 
@@ -185,6 +188,7 @@ These changes should significantly improve performance when handling files with 
 •	Better use of Racket's built-in sorting functionality
 Would you like me to explain any of these optimizations in more detail or suggest additional performance improvements?
 
+---
 ---
 
 ## Prompt 3:
@@ -238,12 +242,14 @@ If you're still seeing performance issues, we could consider:
 Would you like me to implement any of these additional optimizations?
 
 ---
+---
 
 ## Prompt 4:
 
 “The updated code significantly improves the processing time when the input file is large, which is good. However, the changes have caused the program to produce an error when the input file size is small. I still need the program to handle small input files, as well as large ones. The line "(drop remaining chunk-size)" produces the error: " drop: contract violation expected: a list with at least 1000 elements given: '("(1 2)" "(2 1)" "(3 3)" "(5 1)" "(6 2)" "(7 2)" "(8 6)" "(9 2)" "(10 1)") " can you fix this error while retaining the improvements?”
 
 ---
+
 ## Response 4:
 
 Yes, I'll modify the code to handle both small and large files efficiently by adjusting the chunked output logic.
@@ -438,6 +444,7 @@ The algorithm maintains O(n log n) average time complexity, though worst case is
  CopyRetry
 
 ---
+---
 
 ## Prompt 6:
 
@@ -456,6 +463,7 @@ I've simplified the code by:
 3.	Keeping the core quicksort implementation the same
 This should now work correctly with the list returned by hash-keys. Let me know if you run into any other issues!
 
+---
 ---
 
 ## Prompt 7:
@@ -485,6 +493,7 @@ A few caveats:
 2.	If you need even larger datasets, you might want to consider using Racket's built-in sorting functions which are highly optimized for large-scale sorting
 Would you like me to modify anything about this implementation or explain any part in more detail?
 
+---
 ---
 
 ## Prompt 8:
