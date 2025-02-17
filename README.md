@@ -1246,7 +1246,9 @@ The last problem I noticed was that when I gave the program an input file contai
 
 ## Final Code
 
-- Final Code: Includes "Fix For Quick Sort: Implementation 4" as a replacement for the Quick Sort in "Iteration 4". Includes "Fix For Integer Output: Implementation 2" to replace the code inside of Function1 under "; For repeated integers"
+- Includes "Fix For Quick Sort: Implementation 4" as a replacement for the Quick Sort in "Iteration 4".
+
+- Includes the section of "Fix For Integer Output: Implementation 2" under "; For repeated integers" to replace the code inside of Function1 under "; For repeated integers"
 
       #lang racket
       
