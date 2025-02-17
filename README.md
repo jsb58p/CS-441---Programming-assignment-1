@@ -4,7 +4,7 @@
 
  - I have included each iteration of the program that Claude and ChatGPT generated at the bottom of this page under the section "Iterations". This includes the iterations on the entire program, as well as iterations on a specific functions that needed to be modified (details in "Quick Sort" section). The final iteration of the functions used for Quick Sort were pasted into the final iteration of the full code, replacing the sort that Claude had originally generated. 
 
- - I have included the transcript in a separate file called "Transcript". This includes all of my interactions with the AI. Each iteration of the code that I provided coincides with the response I got from each prompt in the transcript. I did not include each iteration of the code in the transcript itself, see the separate file. 
+ - I have included the transcript in a separate file called "Transcript". This includes all of my interactions with the AI. Each iteration of the code that I provided coincides with the response I got from each prompt in the transcript. I did not include each iteration of the code in the transcript itself, see the list of iterations at the bottom of this page. 
 
 # The prompt
 
