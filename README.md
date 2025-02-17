@@ -490,7 +490,9 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
 
 ## Iterations
 
--All of the iterations that were made by Claude are documented below: 
+-All of the iterations that were made by Claude and ChatGPT are documented below: 
+
+## Results of Prompt 1
 
 - Iteration 1
 
@@ -606,6 +608,8 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
 
 ---
 ---
+
+## Results of Prompt 2
 
 - Iteration 2
  
@@ -731,6 +735,8 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
 ---
 ---
 
+## Results of Prompt 3
+
 - Iteration 3
 
       #lang racket
@@ -855,6 +861,8 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
 ---
 ---
 
+## Results of Prompt 4
+
 - Iteration 4
 
       #lang racket
@@ -978,6 +986,8 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
 ---
 ---
 
+## Results of Prompt 5
+
 - Fix For Quick Sort: Implementation 1
 
       (define (quicksort lst)
@@ -1019,6 +1029,8 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
 ---
 ---
 
+## Results of Prompt 6
+
 - Fix For Quick Sort: Implementation 2:
 
       (define (quicksort lst)
@@ -1041,6 +1053,8 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
 
 ---
 ---
+
+## Results of Prompt 7
 
 - Fix For Quick Sort: Implementation 3:
 
@@ -1107,6 +1121,8 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
 ---
 ---
 
+## Results of Prompt 8
+
 - Fix For Quick Sort: Implementation 4
 
       (define (partition vec left right)
@@ -1160,6 +1176,8 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
 ---
 ---
 
+## Results of Prompt 9
+
 -Fix For Integer Output: Iteration 1
 
     (define (function1 bool)
@@ -1184,6 +1202,8 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
       (restart))
 
 ---
+
+## Results of Prompt 10
 
 -Fix For Integer Output: Iteration 2
 
