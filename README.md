@@ -2,7 +2,7 @@
 
 ## Preface
 
- - I have included each iteration of the program that Claude generated at the bottom of this page under the section "Iterations". This includes the iterations on the entire program, as well as iterations on a specific functions that needed to be modified (details in "Quick Sort" section). The final iteration of the functions used for Quick Sort were pasted into the final iteration of the full code, replacing the sort that Claude had originally generated. 
+ - I have included each iteration of the program that Claude and ChatGPT generated at the bottom of this page under the section "Iterations". This includes the iterations on the entire program, as well as iterations on a specific functions that needed to be modified (details in "Quick Sort" section). The final iteration of the functions used for Quick Sort were pasted into the final iteration of the full code, replacing the sort that Claude had originally generated. 
 
  - I have included the transcript in a separate file called "Transcript". This includes all of my interactions with the AI. Each iteration of the code that I provided coincides with the response I got from each prompt in the transcript. I did not include each iteration of the code in the transcript itself, see the separate file. 
 
@@ -152,6 +152,8 @@ Miraculously, Claude was able to do everything that I asked on the first try. It
 
 Unfortunately, in the process of these optimizations, Claude decided to remove my Quick Sort function in favor of the default Racket library sort. I gave Claude the function in isolation, and asked it to change the method to a custom Quick Sort. Within a couple of prompts, Claude was able to provide a working solution. 
 
+The last problem I noticed was that when I gave the program an input file containing a large number of (value frequency) pairs, the output would not be sorted. I was out of responses with Claude and running out of time, so I used ChatGPT to use the same method of traversing a vector instead of the hash in order to get sorted output. 
+
 
 
 ---
@@ -162,7 +164,7 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
 
 ## Main functions of the program
 
--The AI used to make this program is "Claude".
+-The AI used to make the vast majority of this program is "Claude". There was a small contribution from ChatGPT in Function1 (the output of integers).
 
 -This program asks the user to input the name of a text file. 
 
@@ -226,11 +228,11 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
               (chunked-output pairs 1000))
             (display ")"))
           ; For repeated integers
-          (let ([expanded-list 
-                 (for*/list ([(k v) (in-hash table)]
-                            [i (in-range v)])
-                   k)])
-            (chunked-output expanded-list 1000)))
+            (let ([expanded-list 
+             (for*/list ([val (in-vector array)])
+               (let ([freq (hash-ref table val 0)]) ; Default to 0 if not found
+                 (make-list freq val)))] ) ; Repeat the value based on its frequency
+        (chunked-output (apply append expanded-list) 1000)))
       (newline)
       (restart))
 
@@ -256,7 +258,16 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
       (newline)
       (restart))
 
-  -As you can see, the suggestions that Claude introduced involved the creation of new functions, which it handled completely on its own. 
+  -As you can see, the suggestions that Claude introduced involved the creation of new functions, which it handled completely on its own. However, the original output for repeated integers would not sort the integers correctly if there were too many items in the list. That is because in the original code traversed the hash, leading to an unsorted output:
+
+    ; For repeated integers
+    (let ([expanded-list 
+                   (for*/list ([(k v) (in-hash table)]
+                              [i (in-range v)])
+                     k)])
+              (chunked-output expanded-list 1000)))
+            
+  I used ChatGPT (I ran out of responses with Claude) to come up with a way to output the integers from the array, instead of from the hash. This was already done for the output of (value frequency) pairs so I just asked ChatGPT to do the same thing for integers. 
 
   ---
 
@@ -1229,7 +1240,7 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
 
 ---
 
-- Final Code: Includes "Fix For Quick Sort: Implementation 4" as a replacement for the Quick Sort in "Iteration 4".
+- Final Code: Includes "Fix For Quick Sort: Implementation 4" as a replacement for the Quick Sort in "Iteration 4". Includes "Fix For Integer Output: Implementation 2" to replace the code inside of Function1 under "; For repeated integers"
 
       #lang racket
       
@@ -1271,10 +1282,10 @@ Unfortunately, in the process of these optimizations, Claude decided to remove m
               (display ")"))
             ; For repeated integers
             (let ([expanded-list 
-                   (for*/list ([(k v) (in-hash table)]
-                              [i (in-range v)])
-                     k)])
-              (chunked-output expanded-list 1000)))
+             (for*/list ([val (in-vector array)])
+               (let ([freq (hash-ref table val 0)]) ; Default to 0 if not found
+                 (make-list freq val)))] ) ; Repeat the value based on its frequency
+        (chunked-output (apply append expanded-list) 1000)))
         (newline)
         (restart))
       
