@@ -38,19 +38,61 @@
         (display ")"))
       ; For repeated integers
       (let ([expanded-list 
-             (for*/list ([(k v) (in-hash table)]
-                        [i (in-range v)])
-               k)])
-        (chunked-output expanded-list 1000)))
+             (for*/list ([val (in-vector array)])
+               (let ([freq (hash-ref table val 0)]) ; Default to 0 if not found
+                 (make-list freq val)))] ) ; Repeat the value based on its frequency
+        (chunked-output (apply append expanded-list) 1000)))
   (newline)
   (restart))
 
 ; Optimized Function2 with direct sorting
+(define (partition vec left right)
+  (let ([pivot (vector-ref vec right)])
+    (let loop ([i left]
+               [j left]
+               [store-index left])
+      (cond
+        [(> j (- right 1)) 
+         (begin
+           (let ([temp (vector-ref vec right)])
+             (vector-set! vec right (vector-ref vec store-index))
+             (vector-set! vec store-index temp))
+           store-index)]
+        [else
+         (if (< (vector-ref vec j) pivot)
+             (begin
+               (let ([temp (vector-ref vec j)])
+                 (vector-set! vec j (vector-ref vec store-index))
+                 (vector-set! vec store-index temp))
+               (loop i (+ j 1) (+ store-index 1)))
+             (loop i (+ j 1) store-index))]))))
+
+(define (iterative-quicksort vec)
+  (let ([stack '()])  ; Use a list as stack instead of fixed-size vector
+    ; Push initial range
+    (set! stack (list (- (vector-length vec) 1) 0))
+    
+    (let sort-loop ()
+      (when (not (null? stack))
+        (let ([right (car stack)]
+              [left (cadr stack)])
+          (set! stack (cddr stack))
+          
+          (let ([pivot-index (partition vec left right)])
+            ; Push sub-arrays to stack
+            (when (< (+ pivot-index 1) right)
+              (set! stack (cons right (cons (+ pivot-index 1) stack))))
+            
+            (when (> (- pivot-index 1) left)
+              (set! stack (cons (- pivot-index 1) (cons left stack))))
+            
+            (sort-loop))))))
+  vec)
+
 (define (function2)
-  (set! array 
-        (list->vector
-         (sort (hash-keys table) <)))
-  (function1 integer))
+  (let ([keys-vector (list->vector (hash-keys table))])
+    (set! array (iterative-quicksort keys-vector))
+    (function1 integer)))
 
 ; Optimized Function3 with buffered reading
 (define (function3 filename)
@@ -109,6 +151,8 @@
     (cond
       [(equal? choice "1") (function5)]
       [(equal? choice "2") (display "End of program\n")])))
+
+(provide (all-defined-out))
 
 ; Main function
 (define (main)
