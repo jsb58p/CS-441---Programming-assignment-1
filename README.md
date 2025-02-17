@@ -146,7 +146,7 @@ I spent many hours trying to get ChatGPT to cooperate. I tried many different me
 
 The last example I gave was the only one that was able to generate a working solution (which resulted in the 500+ page document that I nearly submitted for this assignment), but it was far from perfect. For example, even though I specified that the sorting algorithm should be a Quick Sort, ChatGPT provided a Merge Sort. 
 
-At this point I had tried Claude a couple of times in the week prior to the assignment being due, but Claude can only generate about 6 responses every several hours, which lead to my decision to stick with ChatGPT and CoPilot. But I decided to make some modifications to the prompt at the top of this page (mainly just making sure the variables are cleared in the "restart" function) and entered it into Claude. 
+At this point I had tried Claude a couple of times in the week prior to the assignment being due, but Claude can only generate about 6 responses every several hours, which led to my decision to stick with ChatGPT and CoPilot. But I decided to make some modifications to the prompt at the top of this page (mainly just making sure the variables are cleared in the "restart" function) and entered it into Claude. 
 
 Miraculously, Claude was able to do everything that I asked on the first try. It did re-arrange some of the functions but it completed the task successfully. However, I noticed the output was very slow for the large input file. So I asked Claude to figure out what the issue was and to come up with a solution. There were a few errors along the way, but within a couple of responses Claude was able to resolve these issues and develop a solution for the slow output. 
 
@@ -181,7 +181,7 @@ The last problem I noticed was that when I gave the program an input file contai
 
 ## Each Significant Block of Code
 
-  -I used a single prompt to generate most of the code, then asked Claude to make suggestions afterwards.
+  -I used a single prompt to generate most of the code, then asked Claude to make suggestions for optimizing large lists afterwards. I also used Claude and ChatGPT to alter a couple of individual functions that weren't working the way I wanted. The details are below.
 
     ; Global variables with optimized data structures
     (define integer #f)
@@ -257,6 +257,8 @@ The last problem I noticed was that when I gave the program an input file contai
               (display (format "~a " k)))))
       (newline)
       (restart))
+
+---
 
   -As you can see, the suggestions that Claude introduced involved the creation of new functions, which it handled completely on its own. However, the original output for repeated integers would not sort the integers correctly if there were too many items in the list. That is because in the original code traversed the hash, leading to an unsorted output:
 
@@ -499,7 +501,7 @@ The last problem I noticed was that when I gave the program an input file contai
 ---
 ---
 
-## Iterations
+# Iterations
 
 -All of the iterations that were made by Claude and ChatGPT are documented below: 
 
