@@ -1215,6 +1215,7 @@ The last problem I noticed was that when I gave the program an input file contai
         (restart))
 
 ---
+---
 
 ## Results of Prompt 10
 
@@ -1241,6 +1242,9 @@ The last problem I noticed was that when I gave the program an input file contai
         (restart))
 
 ---
+---
+
+## Final Code
 
 - Final Code: Includes "Fix For Quick Sort: Implementation 4" as a replacement for the Quick Sort in "Iteration 4". Includes "Fix For Integer Output: Implementation 2" to replace the code inside of Function1 under "; For repeated integers"
 
