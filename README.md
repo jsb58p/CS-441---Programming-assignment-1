@@ -1191,7 +1191,7 @@ The last problem I noticed was that when I gave the program an input file contai
 
 ## Results of Prompt 9
 
--Fix For Integer Output: Iteration 1
+- Fix For Integer Output: Iteration 1
 
     (define (function1 bool)
       (if integer
@@ -1218,7 +1218,7 @@ The last problem I noticed was that when I gave the program an input file contai
 
 ## Results of Prompt 10
 
--Fix For Integer Output: Iteration 2
+- Fix For Integer Output: Iteration 2
 
     (define (function1 bool)
       (if integer
