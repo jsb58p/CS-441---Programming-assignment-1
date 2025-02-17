@@ -1193,26 +1193,26 @@ The last problem I noticed was that when I gave the program an input file contai
 
 - Fix For Integer Output: Iteration 1
 
-    (define (function1 bool)
-      (if integer
-          ; For value-frequency pairs
-          (begin
-            (display "(")
-            (let ([pairs (for/list ([i (in-range (vector-length array))])
-                          (let ([val (vector-ref array i)]
-                                [freq (hash-ref table (vector-ref array i))])
-                            (format "(~a ~a)" val freq)))] )
-              (chunked-output pairs 1000))
-            (display ")"))
-          ; For repeated integers
-          (let ([expanded-list 
-                 (for*/list ([val (in-vector array)]
-                            [freq (in-hash table)]
-                            [i (in-range (hash-ref table val))])
-                   val)])
-            (chunked-output expanded-list 1000)))
-      (newline)
-      (restart))
+      (define (function1 bool)
+        (if integer
+            ; For value-frequency pairs
+            (begin
+              (display "(")
+              (let ([pairs (for/list ([i (in-range (vector-length array))])
+                            (let ([val (vector-ref array i)]
+                                  [freq (hash-ref table (vector-ref array i))])
+                              (format "(~a ~a)" val freq)))] )
+                (chunked-output pairs 1000))
+              (display ")"))
+            ; For repeated integers
+            (let ([expanded-list 
+                   (for*/list ([val (in-vector array)]
+                              [freq (in-hash table)]
+                              [i (in-range (hash-ref table val))])
+                     val)])
+              (chunked-output expanded-list 1000)))
+        (newline)
+        (restart))
 
 ---
 
@@ -1220,25 +1220,25 @@ The last problem I noticed was that when I gave the program an input file contai
 
 - Fix For Integer Output: Iteration 2
 
-    (define (function1 bool)
-      (if integer
-          ; For value-frequency pairs
-          (begin
-            (display "(")
-            (let ([pairs (for/list ([i (in-range (vector-length array))])
-                          (let ([val (vector-ref array i)]
-                                [freq (hash-ref table val 0)]) ; Default to 0 if not found
-                            (format "(~a ~a)" val freq)))] )
-              (chunked-output pairs 1000))
-            (display ")"))
-          ; For repeated integers
-          (let ([expanded-list 
-                 (for*/list ([val (in-vector array)])
-                   (let ([freq (hash-ref table val 0)]) ; Default to 0 if not found
-                     (make-list freq val)))] ) ; Repeat the value based on its frequency
-            (chunked-output (apply append expanded-list) 1000))) ; Flatten the list before chunking
-      (newline)
-      (restart))
+      (define (function1 bool)
+        (if integer
+            ; For value-frequency pairs
+            (begin
+              (display "(")
+              (let ([pairs (for/list ([i (in-range (vector-length array))])
+                            (let ([val (vector-ref array i)]
+                                  [freq (hash-ref table val 0)]) ; Default to 0 if not found
+                              (format "(~a ~a)" val freq)))] )
+                (chunked-output pairs 1000))
+              (display ")"))
+            ; For repeated integers
+            (let ([expanded-list 
+                   (for*/list ([val (in-vector array)])
+                     (let ([freq (hash-ref table val 0)]) ; Default to 0 if not found
+                       (make-list freq val)))] ) ; Repeat the value based on its frequency
+              (chunked-output (apply append expanded-list) 1000))) ; Flatten the list before chunking
+        (newline)
+        (restart))
 
 ---
 
