@@ -130,13 +130,15 @@ End function.
 
 ## Use of AI
 
--This prompt went through several different iterations while I was trying to use ChatGPT and CoPilot. I originally just wrote a paragraph with all of the steps. When asking ChatGPT how to make better prompts, it gave examples using formatted text with bullet points and lists. I decided to adopt this approach. It definitely helped me with iterating and modifying my prompt more easily. However, the results that I got from ChatGPT were not desirable. 
+-Although I spent the most time trying to use ChatGPT and CoPilot, the vast majority of the final program was created with Claude, with some help from ChatGPT.
+
+-I tried out several different types of prompts while I was trying to use ChatGPT and CoPilot. I originally just wrote a paragraph with all of the steps. When asking ChatGPT how to make better prompts, it gave examples using formatted text with bullet points and lists. I eventually settled on this approach, though I went back and forth several times between different prompt types. This version definitely helped me with iterating and modifying my prompt more easily. However, the results that I got from ChatGPT were not desirable. 
 
 This was no doubt partially due to the fact that my prompt doesn't give every last detail necessary to implement the program. But it was mostly due to the fact that ChatGPT refused to do what I told it to do, and insisted on doing things that I told it not to do. You can see remnants of my struggles with ChatGPT in this prompt, such as the line "There should be no “if” statements in this function." in Function2. ChatGPT insisted on using "if" statements even when it wasn't necessary, and always forgot to provide a coinciding "else" or "#f". This is just one of the numerous errors that displayed ChatGPTs lack of understanding of Racket. Even after telling the AI what mistake it was making and how to correct it, it continued making that same mistake. 
 
 Other problems with ChatGPT and CoPilot mostly revolved around it doing the exact opposite of what I told it to do. If I say Quick Sort, ChatGPT provides a Merge Sort method. If I say use vectors for sorting, ChatGPT uses lists for sorting. If I tell ChatGPT not to use functions from other libraries, ChatGPT will either import other libraries anyways, or simply attempt use functions from other libraries without importing them. If I say the program should have balanced parentheses, ChatGPT provides unbalanced parentheses.
 
-I spent many hours trying to get ChatGPT to cooperate. I tried many different methods. I scrapped many prompt ideas and tested out many things. I am not joking when I say that as of the Saturday before this assignment was due, I was planning on turning in a document with over 500 pages of prompts and responses to implement a code using ChatGPT that didn't even fully function as intended. I tried several different methods. Some of the methods I tried included
+I spent many hours trying to get ChatGPT to cooperate. I tried many different methods. I scrapped many prompt ideas and tested out many things. I am not joking when I say that as of the Saturday before this assignment was due, I was planning on turning in a document with over 500 pages of prompts and responses to implement a code using ChatGPT that didn't even fully function as intended. I tried several different methods. Some of the methods I tried included:
 
 -Giving small descriptions of a simple program, generating a response, then giving more small descriptions to add, then generating a response, repeat, bugfix, etc.
 
@@ -144,11 +146,11 @@ I spent many hours trying to get ChatGPT to cooperate. I tried many different me
 
 -Giving an example of input, and an example of the desired output. Let the AI generate its own solution, then tell it to change things where necessary (such as using a specified sorting algorithm instead of default Racket library sort.)
 
-The last example I gave was the only one that was able to generate a working solution (which resulted in the 500+ page document that I nearly submitted for this assignment), but it was far from perfect. For example, even though I specified that the sorting algorithm should be a Quick Sort, ChatGPT provided a Merge Sort. 
+The last example I gave was the only one that was able to generate a working solution with ChatGPT (which resulted in the 500+ page document that I nearly submitted for this assignment), but it was far from perfect. For example, even though I specified that the sorting algorithm should be a Quick Sort, ChatGPT provided a Merge Sort. 
 
 At this point I had tried Claude a couple of times in the week prior to the assignment being due, but Claude can only generate about 6 responses every several hours, which led to my decision to stick with ChatGPT and CoPilot. But I decided to make some modifications to the prompt at the top of this page (mainly just making sure the variables are cleared in the "restart" function) and entered it into Claude. 
 
-Miraculously, Claude was able to do everything that I asked on the first try. It did re-arrange some of the functions but it completed the task successfully. However, I noticed the output was very slow for the large input file. So I asked Claude to figure out what the issue was and to come up with a solution. There were a few errors along the way, but within a couple of responses Claude was able to resolve these issues and develop a solution for the slow output. 
+Miraculously, Claude was able to do everything that I asked on the first try. It did re-arrange some of the functions but it completed the task successfully. However, I noticed the output was very slow for the large input file. So I asked Claude to figure out what the issue was and to come up with a solution. There were a few errors along the way, but within a couple of responses Claude was able to resolve these issues and develop a solution for faster output. 
 
 Unfortunately, in the process of these optimizations, Claude decided to remove my Quick Sort function in favor of the default Racket library sort. I gave Claude the function in isolation, and asked it to change the method to a custom Quick Sort. Within a couple of prompts, Claude was able to provide a working solution. 
 
